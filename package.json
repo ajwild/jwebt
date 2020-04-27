@@ -1,7 +1,7 @@
 {
   "name": "jwebt",
   "version": "0.0.1",
-  "description": "Web Crypto API wrapper for working with JSON Web Tokens in browsers and workers",
+  "description": "Web Crypto API wrapper for working with JSON Web Tokens (JWT) in browsers and workers",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -21,7 +21,14 @@
     "url": "git+https://github.com/ajwild/jwebt.git"
   },
   "keywords": [
-    "jwt"
+    "jwt",
+    "jsonwebtoken",
+    "webcrypto",
+    "crypto",
+    "subtle",
+    "web",
+    "browser",
+    "worker"
   ],
   "author": "Alex Wild",
   "license": "MIT",
