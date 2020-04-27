@@ -17,6 +17,11 @@ export function arrayBufferToBase64(buffer: ArrayBuffer): string {
   return abc;
 }
 
+type ParsedObject = { readonly [key: string]: any };
+export function base64ToObject(base64: string): ParsedObject {
+  return JSON.parse(atob(base64)) as ParsedObject;
+}
+
 export function base64ToArrayBuffer(base64: string): ArrayBuffer {
   return new Uint8Array(
     base64.split('').map((character) => character.charCodeAt(0))
