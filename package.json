@@ -1,0 +1,35 @@
+{
+  "name": "jwebt",
+  "version": "0.0.1",
+  "description": "Web Crypto API wrapper for working with JSON Web Tokens in browsers and workers",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "format": "xo --fix",
+    "lint": "xo",
+    "test": "npm run lint && npm run unit",
+    "unit": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajwild/jwebt.git"
+  },
+  "keywords": [
+    "jwt"
+  ],
+  "author": "Alex Wild",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajwild/jwebt/issues"
+  },
+  "homepage": "https://github.com/ajwild/jwebt#readme",
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "eslint-plugin-functional": "^3.0.1",
+    "jest": "^25.4.0",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3",
+    "xo": "^0.29.1"
+  }
+}
