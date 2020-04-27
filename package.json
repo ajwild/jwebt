@@ -8,8 +8,13 @@
     "build": "tsc",
     "format": "xo --fix",
     "lint": "xo",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test",
     "test": "npm run lint && npm run unit",
-    "unit": "jest"
+    "unit": "jest",
+    "preversion": "npm run test",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
