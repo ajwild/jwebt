@@ -2,8 +2,13 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "declaration": true,
-    "outDir": "./dist",
+    "lib": ["es2018", "dom"],
+    "outDir": "lib-cjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    // Disabled to avoid declaration output when building UMD
+    // Use --declaration with CLI instead
+    "declaration": false,
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true

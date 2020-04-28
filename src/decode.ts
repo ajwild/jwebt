@@ -14,7 +14,7 @@ export type DecodedJWT = {
 };
 /* eslint-enable functional/prefer-readonly-type */
 
-export default function decode(
+export function decode(
   jwt: string,
   { complete = false }: DecodeOptions = {}
 ): DecodedJWT | DecodedJWTPayload {

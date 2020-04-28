@@ -1,5 +1,5 @@
-import isExpired from './is-expired';
-import decode from './decode';
+import { isExpired } from './is-expired';
+import { decode } from './decode';
 
 jest.mock('./decode');
 const mockedDecode = decode as jest.MockedFunction<typeof decode>;

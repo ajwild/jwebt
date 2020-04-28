@@ -5,7 +5,7 @@
 		"jest"
 	],
 	"ignores": [
-		"./jest.config.js"
+		"./*.config.js"
 	],
 	"overrides": [
 		{

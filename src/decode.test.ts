@@ -1,4 +1,4 @@
-import decode from './decode';
+import { decode } from './decode';
 import { base64ToObject } from './utils';
 
 jest.mock('./utils');

@@ -18,7 +18,7 @@ export type SignOptions = {
   readonly keyUsages?: readonly string[];
 };
 
-export default async function sign({
+export async function sign({
   payload,
   privateKey,
   secret,

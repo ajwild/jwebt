@@ -1,11 +1,11 @@
-import decode from './decode';
+import { decode } from './decode';
 import { DecodedJWTPayload } from './types';
 
 export type IsExpiredOptions = {
   readonly expiredWithinSeconds?: number;
 };
 
-export default function isExpired(
+export function isExpired(
   jwt: string,
   { expiredWithinSeconds = 0 }: IsExpiredOptions = {}
 ): boolean {

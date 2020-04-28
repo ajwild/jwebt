@@ -1,4 +1,4 @@
-import sign from './sign';
+import { sign } from './sign';
 import {
   arrayBufferToBase64,
   base64ToArrayBuffer,
