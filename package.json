@@ -5,6 +5,8 @@
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
   "types": "lib-esm/index.d.ts",
+  "unpkg": "lib-umd/jwebt.min.js",
+  "jsdelivr": "lib-umd/jwebt.min.js",
   "sideEffects": false,
   "files": [
     "lib-cjs",
