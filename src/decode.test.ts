@@ -1,10 +1,10 @@
+import { mocked } from 'ts-jest/utils';
+
 import { decode } from './decode';
 import { base64ToObject } from './utils';
 
 jest.mock('./utils');
-const mockedBase64ToObject = base64ToObject as jest.MockedFunction<
-  typeof base64ToObject
->;
+const mockedBase64ToObject = mocked(base64ToObject);
 
 const fakeJWT = 'abc.def.ghi';
 

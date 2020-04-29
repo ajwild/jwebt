@@ -1,3 +1,5 @@
+import { mocked } from 'ts-jest/utils';
+
 import { sign } from './sign';
 import {
   arrayBufferToBase64,
@@ -7,18 +9,10 @@ import {
 } from './utils';
 
 jest.mock('./utils');
-const mockedArrayBufferToBase64 = arrayBufferToBase64 as jest.MockedFunction<
-  typeof arrayBufferToBase64
->;
-const mockedBase64ToArrayBuffer = base64ToArrayBuffer as jest.MockedFunction<
-  typeof base64ToArrayBuffer
->;
-const mockedObjectToBase64 = objectToBase64 as jest.MockedFunction<
-  typeof objectToBase64
->;
-const mockedPemToArrayBuffer = pemToArrayBuffer as jest.MockedFunction<
-  typeof pemToArrayBuffer
->;
+const mockedArrayBufferToBase64 = mocked(arrayBufferToBase64);
+const mockedBase64ToArrayBuffer = mocked(base64ToArrayBuffer);
+const mockedObjectToBase64 = mocked(objectToBase64);
+const mockedPemToArrayBuffer = mocked(pemToArrayBuffer);
 
 type GlobalAny = {
   [key: string]: any;

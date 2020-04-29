@@ -1,8 +1,10 @@
+import { mocked } from 'ts-jest/utils';
+
 import { isExpired } from './is-expired';
 import { decode } from './decode';
 
 jest.mock('./decode');
-const mockedDecode = decode as jest.MockedFunction<typeof decode>;
+const mockedDecode = mocked(decode);
 
 const fakeJWT = 'abc.def.ghi';
 
