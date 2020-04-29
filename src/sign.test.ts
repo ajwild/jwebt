@@ -1,18 +1,4 @@
-import { mocked } from 'ts-jest/utils';
-
 import { sign } from './sign';
-import {
-  arrayBufferToBase64,
-  base64ToArrayBuffer,
-  objectToBase64,
-  pemToArrayBuffer,
-} from './utils';
-
-jest.mock('./utils');
-const mockedArrayBufferToBase64 = mocked(arrayBufferToBase64);
-const mockedBase64ToArrayBuffer = mocked(base64ToArrayBuffer);
-const mockedObjectToBase64 = mocked(objectToBase64);
-const mockedPemToArrayBuffer = mocked(pemToArrayBuffer);
 
 type GlobalAny = {
   [key: string]: any;
@@ -24,11 +10,11 @@ type GlobalAny = {
   };
 };
 
-const globalOriginal = ({ ...global } as unknown) as GlobalAny;
-let globalAny = (global as unknown) as GlobalAny;
-
 describe('sign', () => {
-  beforeEach(() => {
+  const globalOriginal = ({ ...global } as unknown) as GlobalAny;
+  let globalAny = (global as unknown) as GlobalAny;
+
+  beforeAll(() => {
     globalAny.crypto = {
       subtle: {
         importKey: jest.fn(),
@@ -37,21 +23,11 @@ describe('sign', () => {
     };
   });
 
-  afterEach(() => {
+  afterAll(() => {
     globalAny = globalOriginal;
   });
 
-  test('calls internal functions with correct defaults', async () => {
-    const header = {
-      typ: 'JWT',
-      alg: 'RS256',
-    };
-    const payload = { hello: 'world' };
-    const privateKey = 'abc123';
-    const algorithm = {
-      name: 'RSASSA-PKCS1-v1_5',
-      hash: 'SHA-256',
-    };
+  beforeEach(() => {
     const cryptoKey = {
       algorithm: {
         name: 'RSASSA-PKCS1-v1_5',
@@ -61,31 +37,47 @@ describe('sign', () => {
       type: 'JWT',
       usages: ['sign'],
     };
+    const signature = new Uint8Array(
+      'secret'.split('').map((character) => character.charCodeAt(0))
+    ).buffer;
 
-    mockedPemToArrayBuffer.mockReturnValue(new ArrayBuffer(10));
     globalAny.crypto.subtle.importKey.mockReturnValue(cryptoKey);
-    mockedObjectToBase64.mockReturnValueOnce('abc').mockReturnValueOnce('def');
-    mockedBase64ToArrayBuffer.mockReturnValue(new ArrayBuffer(20));
-    globalAny.crypto.subtle.sign.mockReturnValue(new ArrayBuffer(30));
-    mockedArrayBufferToBase64.mockReturnValue('ghi');
+    globalAny.crypto.subtle.sign.mockReturnValue(signature);
+  });
 
-    expect(await sign({ payload, privateKey })).toBe('abc.def.ghi');
-    expect(mockedPemToArrayBuffer).toBeCalledTimes(1);
-    expect(globalAny.crypto.subtle.importKey).toBeCalledWith(
-      'pkcs8',
-      new ArrayBuffer(10),
-      algorithm,
-      false,
-      ['sign']
+  it('provides expected JWT with privateKey', async () => {
+    expect.assertions(1);
+
+    const payload = { exp: 946688400 };
+    const privateKey =
+      '-----BEGIN PRIVATE KEY-----\nexample\n-----END PRIVATE KEY-----\n';
+
+    expect(await sign({ payload, privateKey })).toBe(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJleHAiOjk0NjY4ODQwMH0.c2VjcmV0'
     );
-    expect(mockedObjectToBase64).toBeCalledWith(header);
-    expect(mockedObjectToBase64).toBeCalledWith(payload);
-    expect(mockedBase64ToArrayBuffer).toBeCalledWith('abc.def');
-    expect(globalAny.crypto.subtle.sign).toBeCalledWith(
-      algorithm,
-      cryptoKey,
-      new ArrayBuffer(20)
+  });
+
+  it('provides expected JWT with secret', async () => {
+    expect.assertions(1);
+
+    const payload = { exp: 946688400 };
+    const secret = 'secret';
+
+    expect(await sign({ payload, secret })).toBe(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJleHAiOjk0NjY4ODQwMH0.c2VjcmV0'
     );
-    expect(mockedArrayBufferToBase64).toBeCalledWith(new ArrayBuffer(30));
+  });
+
+  it('adds keyId to ecnoded JWT header', async () => {
+    expect.assertions(1);
+
+    const payload = { exp: 946688400 };
+    const privateKey =
+      '-----BEGIN PRIVATE KEY-----\nexample\n-----END PRIVATE KEY-----\n';
+    const keyId = 'key123';
+
+    expect(await sign({ payload, privateKey, keyId })).toBe(
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6ImtleTEyMyJ9.eyJleHAiOjk0NjY4ODQwMH0.c2VjcmV0'
+    );
   });
 });

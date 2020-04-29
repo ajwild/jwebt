@@ -31,12 +31,7 @@ export async function sign({
   const keyData = privateKey
     ? pemToArrayBuffer(privateKey)
     : stringToArrayBuffer(secret ?? '');
-  const algorithms: {
-    readonly [key: string]: {
-      readonly name: string;
-      readonly hash: string;
-    };
-  } = {
+  const algorithms = {
     RS256: {
       name: 'RSASSA-PKCS1-v1_5',
       hash: 'SHA-256',

@@ -6,33 +6,56 @@ import { decode } from './decode';
 jest.mock('./decode');
 const mockedDecode = mocked(decode);
 
-const fakeJWT = 'abc.def.ghi';
+const fakeJWT =
+  'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJleHAiOjk0NjY4ODQwMH0.c2VjcmV0';
 
 describe('isExpired', () => {
-  test('JWT without exp should not expire', () => {
-    mockedDecode.mockImplementationOnce(() => ({}));
+  it('should return false for JWT without exp', () => {
+    expect.assertions(1);
+
+    mockedDecode.mockImplementation(() => ({}));
+
     expect(isExpired(fakeJWT)).toBe(false);
   });
-  test('JWT with future exp date should not be expired', () => {
+
+  it('should return false for JWT with future exp date', () => {
+    expect.assertions(1);
+
     const exp = Math.floor(new Date().getTime() / 1000) + 60;
-    mockedDecode.mockImplementationOnce(() => ({ exp }));
+
+    mockedDecode.mockImplementation(() => ({ exp }));
+
     expect(isExpired(fakeJWT)).toBe(false);
   });
-  test('JWT with past exp date should be expired', () => {
+
+  it('should return true for JWT with past exp date', () => {
+    expect.assertions(1);
+
     const exp = Math.floor(new Date().getTime() / 1000) - 60;
-    mockedDecode.mockImplementationOnce(() => ({ exp }));
+
+    mockedDecode.mockImplementation(() => ({ exp }));
+
     expect(isExpired(fakeJWT)).toBe(true);
   });
 
   describe('options.expiredWithinSeconds', () => {
-    test('JWT expiring in 61 seconds is not expired when expiredWithinSeconds = 60', () => {
+    it('should return false when expiredWithinSeconds = 60 and JWT is expiring in 61 seconds', () => {
+      expect.assertions(1);
+
       const exp = Math.floor(new Date().getTime() / 1000) + 61;
-      mockedDecode.mockImplementationOnce(() => ({ exp }));
+
+      mockedDecode.mockImplementation(() => ({ exp }));
+
       expect(isExpired(fakeJWT, { expiredWithinSeconds: 60 })).toBe(false);
     });
-    test('JWT expiring in 59 seconds is expired when expiredWithinSeconds = 60', () => {
+
+    it('should return true when expiredWithinSeconds = 60 and JWT is expiring in 59 seconds', () => {
+      expect.assertions(1);
+
       const exp = Math.floor(new Date().getTime() / 1000) + 59;
-      mockedDecode.mockImplementationOnce(() => ({ exp }));
+
+      mockedDecode.mockImplementation(() => ({ exp }));
+
       expect(isExpired(fakeJWT, { expiredWithinSeconds: 60 })).toBe(true);
     });
   });

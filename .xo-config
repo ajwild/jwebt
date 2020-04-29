@@ -17,6 +17,18 @@
 				"plugin:functional/external-recommended",
 				"plugin:functional/recommended"
 			]
+		},
+		{
+			"files": "./**/*.test.ts",
+			"plugins": [
+				"jest"
+			],
+			"extends": [
+				"plugin:jest/all"
+			],
+			"rules": {
+				"jest/no-hooks": 0
+			}
 		}
 	],
 	"prettier": true,
