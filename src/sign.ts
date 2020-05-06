@@ -16,6 +16,7 @@ export type SignOptions = {
   readonly algorithm?: 'RS256';
   readonly extractable?: boolean;
   readonly keyUsages?: readonly string[];
+  readonly subtleCrypto?: SubtleCrypto;
 };
 
 export async function sign({
@@ -27,6 +28,7 @@ export async function sign({
   algorithm = 'RS256',
   extractable = false,
   keyUsages = ['sign'],
+  subtleCrypto = window?.crypto?.subtle,
 }: Immutable<SignOptions>): Promise<string> {
   const keyData = privateKey
     ? pemToArrayBuffer(privateKey)
@@ -38,7 +40,7 @@ export async function sign({
     },
   };
 
-  const key = await window.crypto.subtle.importKey(
+  const key = await subtleCrypto.importKey(
     format,
     keyData,
     algorithms[algorithm],
@@ -58,11 +60,7 @@ export async function sign({
   const encodedPayload = objectToBase64(payload);
   const data = base64ToArrayBuffer(`${encodedHeader}.${encodedPayload}`);
 
-  const signature = await window.crypto.subtle.sign(
-    algorithms[algorithm],
-    key,
-    data
-  );
+  const signature = await subtleCrypto.sign(algorithms[algorithm], key, data);
   const encodedSignature = arrayBufferToBase64(signature);
 
   return `${encodedHeader}.${encodedPayload}.${encodedSignature}`;
