@@ -1,6 +1,6 @@
 {
   "name": "jwebt",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Web Crypto API wrapper for working with JSON Web Tokens (JWT) in browsers and workers",
   "main": "lib-cjs/index.js",
   "module": "lib-esm/index.js",
