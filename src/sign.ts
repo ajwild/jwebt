@@ -47,7 +47,7 @@ export async function sign({
     extractable,
     // Needed for importKey compatibility
     // eslint-disable-next-line functional/prefer-readonly-type
-    keyUsages as string[]
+    keyUsages as KeyUsage[]
   );
 
   const header: DecodedJWTHeader = {
