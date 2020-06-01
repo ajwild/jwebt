@@ -33,7 +33,7 @@ export type DecodedJWTPayload = Partial<{
   [key: string]: any;
   iss: string;
   sub: string;
-  aud: string;
+  aud: string | string[];
   exp: number;
   nbf: number;
   iat: number;
