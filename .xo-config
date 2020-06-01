@@ -15,7 +15,7 @@
 			],
 			"extends": [
 				"plugin:functional/external-recommended",
-				"plugin:functional/recommended"
+				"plugin:functional/lite"
 			]
 		},
 		{
